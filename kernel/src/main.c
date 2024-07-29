@@ -1,3 +1,4 @@
+#include "serial.h"
 #include "limine.h"
 #include "tables/gdt.h"
 #include <stdbool.h>
@@ -78,6 +79,6 @@ void _start(void) {
     hcf();
   }
 
-  load_gdt();
+  load_gdt(); 
   hcf();
 }

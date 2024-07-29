@@ -1,4 +1,8 @@
 #include <stdint.h>
+
+#ifndef GDT_H
+#define GDT_H
+
 struct GDTEntry {
   uint16_t limit;
   uint16_t base;
@@ -7,24 +11,20 @@ struct GDTEntry {
   uint8_t limit2 : 4;
   uint8_t flags : 4;
   uint8_t base3;
-};
-
-struct GlobalDescriptorTable {
-  struct GDTEntry null;
-  struct GDTEntry kmcs;
-  struct GDTEntry kmds;
-};
+} __attribute__((packed));
 
 struct GlobalDescriptor {
   uint16_t size;
   uint64_t offset;
-};
+} __attribute__((packed));
 
-struct GDTEntry create_entry(uint16_t base, uint32_t limit, uint8_t access,
-                             uint8_t flags);
+struct GDTEntry create_entry(uint16_t base, uint32_t limit, uint8_t access, uint8_t flags);
 
-struct GlobalDescriptorTable create_table();
+void create_table();
 
-struct GlobalDescriptor create_descriptor(struct GlobalDescriptorTable *);
+struct GlobalDescriptor create_descriptor();
 
+__attribute__((noinline))
 void load_gdt();
+
+#endif
